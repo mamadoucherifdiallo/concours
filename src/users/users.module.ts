@@ -7,6 +7,7 @@ import { Student, StudentSchema } from "./entities/student.entity";
 import { Worker, WorkerSchema } from "./entities/worker.entity";
 import { Admin, AdminSchema } from "./entities/admin.entity";
 import { UserHelperService } from "./user.helper.service";
+import { MailModule } from "src/mail/mail.module";
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { UserHelperService } from "./user.helper.service";
         ],
       },
     ]),
+    MailModule
   ],
   controllers: [UsersController],
   providers: [UsersService, UserHelperService],
