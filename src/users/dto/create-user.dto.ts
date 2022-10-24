@@ -22,6 +22,21 @@ export class CreateWorkerDto extends CreateUserDto {
   school: string;
 }
 
-export class ActiveAccountDto{
+export class ActiveAccountDto {
+  @IsNotEmpty({ message: "Token is required" })
   token: string;
+}
+
+export class ResetPasswordLinkDto {
+  @IsNotEmpty({ message: "email is required" })
+  @IsEmail({ message: "Please provide email with correct email format" })
+  email: string;
+}
+
+export class ResetPasswordDto {
+  @IsNotEmpty({ message: "Reset password token is required" })
+  token: string;
+
+  @IsNotEmpty({ message: "password is required" })
+  password: string;
 }

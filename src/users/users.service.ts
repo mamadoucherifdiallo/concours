@@ -12,6 +12,8 @@ import {
   ActiveAccountDto,
   CreateStudentDto,
   CreateWorkerDto,
+  ResetPasswordDto,
+  ResetPasswordLinkDto,
 } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { EAccountType, User } from "./entities/user.entity";
@@ -20,6 +22,7 @@ import { Result, succeed } from "src/herpers/http-response.helper";
 import { JwtService } from "@nestjs/jwt";
 import { UserHelperService } from "./user.helper.service";
 import { UnauthorizationException } from "src/exceptions/unauthorization.exception";
+import { NotFoundException } from "src/exceptions/not-found.exception";
 
 @Injectable()
 export class UsersService {
@@ -155,6 +158,81 @@ export class UsersService {
         code: HttpStatus.OK,
       });
     } catch (error) {
+      if (error.status === 401)
+        throw new UnauthorizationException(error.message);
+      throw new HttpException(
+        ErrorMessages.INTERNAL_SERVER_ERROR,
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+  }
+
+  async sendResetPasswordLink(
+    resetPasswordLinkDto: ResetPasswordLinkDto
+  ): Promise<Result> {
+    try {
+      const user = await this.userHelperService.__findOneByEmail(
+        resetPasswordLinkDto.email
+      );
+      if (!user) {
+        throw new NotFoundException(
+          `Account with this email address "${resetPasswordLinkDto.email}" not exist.`
+        );
+      }
+      const token = {
+        email: user.email,
+        randomValue: generatePin(),
+      };
+      const signedToken = this.jwtService.sign(token);
+      this.mailService.sendResetPasswordLink(
+        {
+          name: `${user.firstName} ${user.lastName}`,
+          email: user.email,
+          body: "Vous avez demandé un changement de mot de passe pour votre compte. Merci de cliquer sur le lien ci-dessous pour mettre à jour votre mot de psse.",
+          info: "Mise à jour de votre mot de passe",
+        },
+        `http://localhost:4200/send-reset-password-link/${signedToken}`
+      );
+      user.token = signedToken;
+      await user.save();
+      return succeed({
+        data: null,
+        message: "An email to reset your password has been sent to you",
+      });
+    } catch (error) {
+      if (error.status === 404) throw new NotFoundException(error.message);
+      throw new HttpException(
+        ErrorMessages.INTERNAL_SERVER_ERROR,
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+  }
+
+  async resetPassword(resetPasswordDto: ResetPasswordDto): Promise<Result> {
+    try {
+      const decodedProvidedToken = this.jwtService.verify(
+        resetPasswordDto.token
+      );
+      const user = await this.userHelperService.__findOneByEmail(
+        decodedProvidedToken.email
+      );
+      if (resetPasswordDto.token !== user.token) {
+        throw new UnauthorizationException("Invalid token");
+      }
+      const token = {
+        email: user.email,
+        randomValue: generatePin(),
+      };
+      const salt = await bcrypt.genSalt()
+      user.password = await bcrypt.hash(resetPasswordDto.password, salt);
+      user.token = this.jwtService.sign(token);
+      await user.save();
+      return succeed({
+        data: null,
+        message: "Your password is updated successfully",
+      });
+    } catch (error) {
+      if (error.status === 404) throw new NotFoundException(error.message);
       if (error.status === 401)
         throw new UnauthorizationException(error.message);
       throw new HttpException(

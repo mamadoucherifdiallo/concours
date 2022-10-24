@@ -10,7 +10,13 @@ import {
   Req,
 } from "@nestjs/common";
 import { UsersService } from "./users.service";
-import { ActiveAccountDto, CreateStudentDto, CreateWorkerDto } from "./dto/create-user.dto";
+import {
+  ActiveAccountDto,
+  CreateStudentDto,
+  CreateWorkerDto,
+  ResetPasswordDto,
+  ResetPasswordLinkDto,
+} from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { JwtAuthGuard } from "src/authentification/jwt-auth.guard";
 
@@ -25,13 +31,23 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Post("new-worker")
-  createWorker(@Body() createWorkerDto: CreateWorkerDto) { 
+  createWorker(@Body() createWorkerDto: CreateWorkerDto) {
     return this.usersService.createWorker(createWorkerDto);
   }
 
-  @Post('active-account')
-  activeAccount(@Body() value: ActiveAccountDto){
+  @Post("active-account")
+  activeAccount(@Body() value: ActiveAccountDto) {
     return this.usersService.activeAccount(value);
+  }
+
+  @Post("reset-password-link")
+  sendResetPasswordLink(@Body() resetPasswordLinkDto: ResetPasswordLinkDto) {
+    return this.usersService.sendResetPasswordLink(resetPasswordLinkDto);
+  }
+
+  @Post("reset-password")
+  resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    return this.usersService.resetPassword(resetPasswordDto);
   }
 
   @Get()
