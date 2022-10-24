@@ -3,6 +3,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import {
   generateDefaultPassword,
+  generatePin,
   generateToken,
 } from "src/herpers/main.helper";
 import { MailService } from "src/mail/mail.service";
@@ -10,6 +11,7 @@ import { CreateStudentDto, CreateWorkerDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { EAccountType, User } from "./entities/user.entity";
 import * as bcrypt from "bcrypt";
+import { Result, succeed } from "src/herpers/http-response.helper";
 
 @Injectable()
 export class UsersService {
@@ -18,14 +20,18 @@ export class UsersService {
     private readonly mailService: MailService
   ) {}
 
-  async createStudent(createStudentDto: CreateStudentDto) {
+  async createStudent(createStudentDto: CreateStudentDto): Promise<Result> {
     try {
       const operationDate = new Date();
       const salt = await bcrypt.genSalt();
+      const token = {
+        email: createStudentDto.email,
+        randomValue: generatePin() 
+      }
       const newUser = {
         ...createStudentDto,
         password: await bcrypt.hash(createStudentDto.password, salt),
-        token: await bcrypt.hash(generateToken(), salt),
+        token: await bcrypt.hash(JSON.stringify(token), salt),
         accountType: "Student",
         createdAt: operationDate,
         lastUpdatedAt: operationDate,
@@ -41,16 +47,12 @@ export class UsersService {
         "Activation de compte",
         `http://localhost:4200/account-activation/${newUser.token}`
       );
-      return {
+      return succeed({
         data: createdUser,
         code: HttpStatus.CREATED,
-        error: null,
         message: "Student account created successfully",
-        success: true,
-      };
-    } catch (error) {
-      console.log(error);
-
+      })
+    } catch (error) {      
       if (error.code === 11000)
         throw new HttpException(
           `User with email ${createStudentDto.email} already exist`,
@@ -63,12 +65,11 @@ export class UsersService {
     }
   }
 
-  async createWorker(createWorkerDto: CreateWorkerDto) {
+  async createWorker(createWorkerDto: CreateWorkerDto): Promise<Result> {
     try {
       const operationDate = new Date();
       const salt = await bcrypt.genSalt();
       const password = generateDefaultPassword;
-      console.log(password);
 
       const newUser = {
         ...createWorkerDto,
@@ -85,13 +86,11 @@ export class UsersService {
         body: "Votre compte a bien été créé",
         info: "Création de nouveau compte",
       });
-      return {
+      return succeed({
         data: createdUser,
         code: HttpStatus.CREATED,
-        error: null,
-        message: "Worker account created successfully",
-        success: true,
-      };
+        message: "Student account created successfully",
+      })
     } catch (error) {
       console.log(error);
 

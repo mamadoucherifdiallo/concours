@@ -9,9 +9,8 @@ services:
       - 3000:3000
     volumes:
       - ./:/usr/src/concours
-    environment:
-      NODE_ENV: development
-      DB_URL: mongodb://mongodb:27017/concours
+    env_file:
+      - .env
     networks:
       - concours-network
     depends_on:
