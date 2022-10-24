@@ -9,7 +9,7 @@ export class UserHelperService {
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>
   ) {}
 
-  async __createUser(newUser: any) {
-    return await this.userModel.create(newUser);
+  async __findOneByEmail(email: string){
+    return await this.userModel.findOne({email: email})
   }
 }

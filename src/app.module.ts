@@ -6,6 +6,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { UsersModule } from "./users/users.module";
+import { AuthentificationModule } from './authentification/authentification.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { UsersModule } from "./users/users.module";
       isGlobal: true,
       envFilePath: [".env", `.${process.env.NODE_ENV}.env`],
     }),
+    AuthentificationModule,
   ],
   controllers: [AppController],
   providers: [

@@ -7,4 +7,7 @@ export class DefaultAttribute {
 
   @Prop({ type: Date, required: true })
   lastUpdatedAt: Date;
+
+  @Prop({ type: Boolean, default: false })
+  isDeleted: boolean;
 }
