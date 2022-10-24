@@ -21,3 +21,7 @@ export class CreateWorkerDto extends CreateUserDto {
   @IsNotEmpty({ message: "School is required" })
   school: string;
 }
+
+export class ActiveAccountDto{
+  token: string;
+}

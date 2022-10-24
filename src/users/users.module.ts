@@ -8,6 +8,8 @@ import { Worker, WorkerSchema } from "./entities/worker.entity";
 import { Admin, AdminSchema } from "./entities/admin.entity";
 import { UserHelperService } from "./user.helper.service";
 import { MailModule } from "src/mail/mail.module";
+import { JwtModule } from "@nestjs/jwt";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
 @Global()
 @Module({
@@ -23,10 +25,17 @@ import { MailModule } from "src/mail/mail.module";
         ],
       },
     ]),
-    MailModule
+    MailModule,
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>("JWT_SECRET"),
+      }),
+      inject: [ConfigService],
+    }),
   ],
   controllers: [UsersController],
   providers: [UsersService, UserHelperService],
-  exports: [UserHelperService]
+  exports: [UserHelperService],
 })
 export class UsersModule {}
