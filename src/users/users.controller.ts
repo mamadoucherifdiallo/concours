@@ -10,7 +10,7 @@ import {
   Req,
 } from "@nestjs/common";
 import { UsersService } from "./users.service";
-import { CreateStudentDto, CreateWorkerDto } from "./dto/create-user.dto";
+import { ActiveAccountDto, CreateStudentDto, CreateWorkerDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { JwtAuthGuard } from "src/authentification/jwt-auth.guard";
 
@@ -27,6 +27,11 @@ export class UsersController {
   @Post("new-worker")
   createWorker(@Body() createWorkerDto: CreateWorkerDto) { 
     return this.usersService.createWorker(createWorkerDto);
+  }
+
+  @Post('active-account')
+  activeAccount(@Body() value: ActiveAccountDto){
+    return this.usersService.activeAccount(value);
   }
 
   @Get()

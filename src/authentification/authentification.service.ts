@@ -47,10 +47,11 @@ export class AuthentificationService {
       if (!isPasswordMatch) {
         throw new UnauthorizationException("Wrong password please try again");
       }
+      if(!user.isActive){
+        throw new UnauthorizationException("Your account is deactivated. Please contact your support.");
+      }
       return user;
     } catch (error) {
-        
-        
       if (error.status === 401)
         throw new UnauthorizationException(error.message);
       throw new HttpException(
