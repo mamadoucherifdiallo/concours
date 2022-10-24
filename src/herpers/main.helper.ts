@@ -33,25 +33,19 @@ export enum ErrorMessages {
   INTERNAL_SERVER_ERROR = "Une erreur serveur est survenue",
 }
 
-/* export const getDefaultUserInfos = (user: any) => ({
+export const getDefaultStudentInfos = (user: any) => ({
   code: user.code,
   firstName: user.firstName,
   lastName: user.lastName,
-  photo: user.photo,
-  history: user.history,
   role: user.role,
-  university: user.university || "",
-  school: user.school || "",
   birthDay: user.birthDay,
   email: user.email,
   phoneNumber: user.phoneNumber,
   createdAt: user.createdAt,
   lastUpdatedAt: user.lastUpdatedAt,
-  academic_year: user.acedemic_year,
   isDeleted: user.isDeleted,
-  isActiveAccount: user.isActiveAccount,
-  documents: user.documents,
-}); */
+  isActive: user.isActiveAccount,
+});
 
 /* export enum EDocumentTypes {
   EXTRAIT = "EXTRAIT",

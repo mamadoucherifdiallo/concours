@@ -35,6 +35,12 @@ export class User extends DefaultAttribute {
   @Prop({ type: Boolean, default: false })
   isActive: boolean;
 
+  @Prop({ type: String, default: '' })
+  phoneNumber: string;
+
+  @Prop({ type: Date, default: null })
+  birthDay: Date;
+
   @Prop({ type: String, required: true, enum: EAccountType })
   accountType: string;
 

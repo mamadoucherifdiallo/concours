@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { Global, Module } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { UsersController } from "./users.controller";
 import { MongooseModule } from "@nestjs/mongoose";
@@ -9,6 +9,7 @@ import { Admin, AdminSchema } from "./entities/admin.entity";
 import { UserHelperService } from "./user.helper.service";
 import { MailModule } from "src/mail/mail.module";
 
+@Global()
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -26,5 +27,6 @@ import { MailModule } from "src/mail/mail.module";
   ],
   controllers: [UsersController],
   providers: [UsersService, UserHelperService],
+  exports: [UserHelperService]
 })
 export class UsersModule {}
