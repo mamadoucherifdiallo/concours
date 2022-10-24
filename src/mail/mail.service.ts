@@ -50,4 +50,25 @@ export class MailService {
       },
     });
   }
+
+  async sendResetPasswordLink(
+    { name, email, body, info }: UserEntity,
+    url?: string
+  ) {
+    // const url = `example.com/auth/confirm?token=${token}`;
+
+    await this.mailerService.sendMail({
+      to: email,
+      from: '"Sama concours" <mamadoucherifd57@gmail.com>', // override default from
+      subject: "Mise à jour de mot de passe",
+      template: "./reset-password", // `.hbs` extension is appended automatically
+      context: {
+        // ✏️ filling curly brackets with content
+        name,
+        url,
+        body,
+        info,
+      },
+    });
+  }
 }
