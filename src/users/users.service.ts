@@ -23,6 +23,7 @@ import { JwtService } from "@nestjs/jwt";
 import { UserHelperService } from "./user.helper.service";
 import { UnauthorizationException } from "src/exceptions/unauthorization.exception";
 import { NotFoundException } from "src/exceptions/not-found.exception";
+import { RoleHelperService } from "src/role/role.helper.service";
 
 @Injectable()
 export class UsersService {
@@ -30,7 +31,8 @@ export class UsersService {
     @InjectModel(User.name) private readonly userModel: Model<any>,
     private readonly mailService: MailService,
     private readonly jwtService: JwtService,
-    private readonly userHelperService: UserHelperService
+    private readonly userHelperService: UserHelperService,
+    private readonly roleHelperService: RoleHelperService
   ) {}
 
   async createStudent(createStudentDto: CreateStudentDto): Promise<Result> {
@@ -41,15 +43,25 @@ export class UsersService {
         email: createStudentDto.email,
         randomValue: generatePin(),
       };
+      const role = await this.roleHelperService.__findRoleByNameOrCode(
+        "Student"
+      );
+      if (!role) {
+        throw new NotFoundException("Role not found");
+      }
       const newUser = {
         ...createStudentDto,
         password: await bcrypt.hash(createStudentDto.password, salt),
         token: this.jwtService.sign(token),
         accountType: "Student",
+        role: role._id,
         createdAt: operationDate,
         lastUpdatedAt: operationDate,
       };
       const createdUser = await this.userModel.create(newUser);
+      await this.roleHelperService.__addUsersToRole(role._id, [
+        createdUser._id,
+      ]);
       await this.mailService.sendActivationEmail(
         {
           name: `${newUser.firstName} ${newUser.lastName}`,
@@ -67,7 +79,7 @@ export class UsersService {
       });
     } catch (error) {
       console.log(error);
-
+      if (error.status === 404) throw new NotFoundException(error.message);
       if (error.code === 11000)
         throw new HttpException(
           `User with email ${createStudentDto.email} already exist`,
@@ -223,7 +235,7 @@ export class UsersService {
         email: user.email,
         randomValue: generatePin(),
       };
-      const salt = await bcrypt.genSalt()
+      const salt = await bcrypt.genSalt();
       user.password = await bcrypt.hash(resetPasswordDto.password, salt);
       user.token = this.jwtService.sign(token);
       await user.save();

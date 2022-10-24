@@ -7,6 +7,7 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { UsersModule } from "./users/users.module";
 import { AuthentificationModule } from './authentification/authentification.module';
+import { RoleModule } from './role/role.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AuthentificationModule } from './authentification/authentification.modu
       envFilePath: [".env", `.${process.env.NODE_ENV}.env`],
     }),
     AuthentificationModule,
+    RoleModule,
   ],
   controllers: [AppController],
   providers: [
