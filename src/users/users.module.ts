@@ -10,6 +10,7 @@ import { UserHelperService } from "./user.helper.service";
 import { MailModule } from "src/mail/mail.module";
 import { JwtModule } from "@nestjs/jwt";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { RoleModule } from "src/role/role.module";
 
 @Global()
 @Module({
@@ -33,6 +34,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
       }),
       inject: [ConfigService],
     }),
+    RoleModule
   ],
   controllers: [UsersController],
   providers: [UsersService, UserHelperService],
