@@ -12,6 +12,8 @@ import { RoleService } from "./role.service";
 import { CreateRoleDto } from "./dto/create-role.dto";
 import { UpdateRoleDto } from "./dto/update-role.dto";
 import { JwtAuthGuard } from "src/authentification/jwt-auth.guard";
+import { isValidRoleCode } from "src/herpers/role.helper";
+import { InvalidCodeException } from "src/exceptions/invalid-code.exception";
 
 @UseGuards(JwtAuthGuard)
 @Controller("roles")
@@ -28,14 +30,18 @@ export class RoleController {
     return this.roleService.findAll();
   }
 
-  @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.roleService.findOne(+id);
+  @Get(":code")
+  findOne(@Param("code") code: string) {
+    if (!isValidRoleCode(code))
+      throw new InvalidCodeException("Invalid role code");
+    return this.roleService.findOne(code);
   }
 
-  @Patch(":id")
-  update(@Param("id") id: string, @Body() updateRoleDto: UpdateRoleDto) {
-    return this.roleService.update(+id, updateRoleDto);
+  @Patch(":code")
+  update(@Param("code") code: string, @Body() updateRoleDto: UpdateRoleDto) {
+    if (!isValidRoleCode(code))
+      throw new InvalidCodeException("Invalid role code");
+    return this.roleService.update(code, updateRoleDto);
   }
 
   @Delete(":id")
