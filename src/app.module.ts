@@ -8,6 +8,7 @@ import { AppService } from "./app.service";
 import { UsersModule } from "./users/users.module";
 import { AuthentificationModule } from './authentification/authentification.module';
 import { RoleModule } from './role/role.module';
+import { SchoolYearModule } from './school-year/school-year.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { RoleModule } from './role/role.module';
     }),
     AuthentificationModule,
     RoleModule,
+    SchoolYearModule,
   ],
   controllers: [AppController],
   providers: [
