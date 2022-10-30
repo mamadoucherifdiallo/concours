@@ -27,3 +27,9 @@ export const getDefaultRoleValues = (role) => ({
   lastUpdatedAt: role.lastUpdatedAt,
   isDeleted: role.isDeleted,
 });
+
+export enum ERole {
+  ADMIN = "Admin",
+  STUDENT = "Student",
+  WORKER = "Worker",
+}

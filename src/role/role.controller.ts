@@ -12,10 +12,11 @@ import { RoleService } from "./role.service";
 import { CreateRoleDto } from "./dto/create-role.dto";
 import { UpdateRoleDto } from "./dto/update-role.dto";
 import { JwtAuthGuard } from "src/authentification/jwt-auth.guard";
-import { isValidRoleCode } from "src/herpers/role.helper";
+import { ERole, isValidRoleCode } from "src/herpers/role.helper";
 import { InvalidCodeException } from "src/exceptions/invalid-code.exception";
+import { RolesGuard } from "src/guards/roles.guard";
+import { Roles } from "src/custom-decorators/roles.decorator";
 
-@UseGuards(JwtAuthGuard)
 @Controller("roles")
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
@@ -25,6 +26,8 @@ export class RoleController {
     return this.roleService.create(createRoleDto);
   }
 
+  @Roles(ERole.STUDENT,ERole.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get()
   findAll() {
     return this.roleService.findAll();
