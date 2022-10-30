@@ -44,7 +44,7 @@ export class User extends DefaultAttribute {
   @Prop({ type: String, required: true, enum: EAccountType })
   accountType: string;
 
-  @Prop({ type: Types.ObjectId, default: null })
+  @Prop({ type: Types.ObjectId, default: null, ref: 'Role' })
   role: string;
 
   @Prop({ type: String, default: null })

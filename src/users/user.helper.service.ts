@@ -10,6 +10,6 @@ export class UserHelperService {
   ) {}
 
   async __findOneByEmail(email: string){
-    return await this.userModel.findOne({email: email})
+    return await (await this.userModel.findOne({email: email})).populate({path: 'role'})
   }
 }
