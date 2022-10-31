@@ -9,13 +9,13 @@ export type SchoolYearDocument = SchoolYear & Document;
 export class SchoolYear extends DefaultAttribute {
   @Prop({
     type: String,
-    require: true,
+    required: true,
     unique: true,
     default: () => generateCode("SCY"),
   })
   code: string;
 
-  @Prop({ type: String, require: true, unique: true })
+  @Prop({ type: String, required: true, unique: true })
   label: string;
 
   @Prop({ type: Number, required: true, unique: true })

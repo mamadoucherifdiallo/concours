@@ -9,6 +9,7 @@ import { UsersModule } from "./users/users.module";
 import { AuthentificationModule } from './authentification/authentification.module';
 import { RoleModule } from './role/role.module';
 import { SchoolYearModule } from './school-year/school-year.module';
+import { InstitutionModule } from './institution/institution.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { SchoolYearModule } from './school-year/school-year.module';
     AuthentificationModule,
     RoleModule,
     SchoolYearModule,
+    InstitutionModule,
   ],
   controllers: [AppController],
   providers: [
