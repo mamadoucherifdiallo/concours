@@ -14,7 +14,7 @@ export class Worker extends DefaultAttribute {
   token: string;
   accountType: string;
   @Prop({ type: Types.ObjectId, required: true, default: null }) // School est requis à rajouter plutard
-  school: any;
+  institution: any;
 }
 
 export const WorkerSchema = SchemaFactory.createForClass(Worker);
