@@ -52,6 +52,18 @@ export const getDefaultStudentInfos = (user: any) => ({
   CNI = "CNI",
 } */
 
-export const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+export const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-export const phoneNumberRegex = /^[+]*[0-9]{1,3}[37][305-9][0-9]{3}[0-9]{2}[0-9]{2}$/  // Numéro de téléphone pour le Sénégal
+export const phoneNumberRegex =
+  /^[+]*[0-9]{1,3}[37][305-9][0-9]{3}[0-9]{2}[0-9]{2}$/; // Numéro de téléphone pour le Sénégal
+
+export enum ESocialMedia {
+  FACEBOOK = "FACEBOOK",
+  WHATSAPP = "WHATSAPP",
+  LINKEDIN = "LINKEDIN",
+}
+
+export class SocialMedia {
+  value: string;
+  type: ESocialMedia;
+}

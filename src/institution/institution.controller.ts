@@ -37,12 +37,14 @@ export class InstitutionController {
     return this.institutionService.findOne(code);
   }
 
-  @Patch(":id")
+  @Patch(":code")
   update(
-    @Param("id") id: string,
+    @Param("code") code: string,
     @Body() updateInstitutionDto: UpdateInstitutionDto
   ) {
-    return this.institutionService.update(+id, updateInstitutionDto);
+    if (!isValidInstitutionCode(code))
+      throw new InvalidCodeException("Invalid institution code");
+    return this.institutionService.update(code, updateInstitutionDto);
   }
 
   @Delete(":id")

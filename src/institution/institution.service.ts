@@ -43,8 +43,6 @@ export class InstitutionService {
         message: "Institution created successfully",
       });
     } catch (error) {
-      console.log(error);
-
       if (error.code === 11000)
         throw new DuplicatedResourceException(
           `Institution with this same name "${createInstitutionDto.name}" already exist`
@@ -78,8 +76,43 @@ export class InstitutionService {
     }
   }
 
-  update(id: number, updateInstitutionDto: UpdateInstitutionDto) {
-    return `This action updates a #${id} institution`;
+  async update(
+    code: string,
+    updateInstitutionDto: UpdateInstitutionDto
+  ): Promise<Result> {
+    try {
+      const institution = await this.institutionModel.findOne({ code });
+      if (!institution) throw new NotFoundException("Institution not found");
+      institution.name = updateInstitutionDto.name || institution.name;
+      institution.acronym = updateInstitutionDto.acronym || institution.acronym;
+      institution.address = updateInstitutionDto.address || institution.address;
+      institution.oldName = updateInstitutionDto.oldName || institution.oldName;
+      institution.emails = updateInstitutionDto.emails || institution.emails;
+      institution.phoneNumbers =
+        updateInstitutionDto.phoneNumbers || institution.phoneNumbers;
+      institution.websites =
+        updateInstitutionDto.websites || institution.websites;
+
+      await institution.save();
+      return succeed({
+        data: getDefaultInstitutionInfos(institution),
+        message: `Institution updated successfully`,
+      });
+    } catch (error) {
+      if (error.code === 11000)
+        throw new DuplicatedResourceException(
+          `Institution with this same name "${updateInstitutionDto.name}" ${
+            updateInstitutionDto.acronym
+              ? "or acronym " + updateInstitutionDto.acronym
+              : ""
+          } already exist`
+        );
+      if (error.status === 404) throw new NotFoundException(error.message);
+      throw new HttpException(
+        ErrorMessages.INTERNAL_SERVER_ERROR,
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 
   remove(id: number) {

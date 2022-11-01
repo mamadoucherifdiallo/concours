@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, ObjectId, Types } from "mongoose";
-import { generateCode } from "src/herpers/main.helper";
+import { generateCode, SocialMedia } from "src/herpers/main.helper";
 import { DefaultAttribute } from "src/shared/entities/default-attributes.entity";
 import { User } from "src/users/entities/user.entity";
 
@@ -37,7 +37,7 @@ export class Institution extends DefaultAttribute {
   phoneNumbers: string[];
 
   @Prop({ type: Types.Array, default: [] })
-  socialMedia: any[];
+  socialMedia: SocialMedia[];
 
   @Prop({ type: [Types.ObjectId], required: true, default: [], ref: 'Center' })
   centers: ObjectId[];
