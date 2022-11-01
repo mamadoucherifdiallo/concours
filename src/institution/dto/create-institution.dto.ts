@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsOptional } from "class-validator";
+import { IsNotEmpty, IsOptional, Validate } from "class-validator";
+import { EmailsValidator, PhoneNumbersValidator } from "src/herpers/institution.helper";
 
 export class CreateInstitutionDto {
   @IsNotEmpty({ message: "Institution name is require" })
@@ -8,9 +9,11 @@ export class CreateInstitutionDto {
   address: string;
 
   @IsNotEmpty({ message: "Institution must have at least one email address" }) // Rajouter un custom validateur pour les emails
+  @Validate(EmailsValidator)
   emails: string[];
 
   @IsNotEmpty({ message: "Institution must have at least one phone number" }) // Rajouter un custom validateur pour les numéro de téléphone
+  @Validate(PhoneNumbersValidator)
   phoneNumbers: string[];
 
   @IsOptional()
