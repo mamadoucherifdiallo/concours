@@ -4,6 +4,7 @@ import {
   ValidatorConstraintInterface,
 } from "class-validator";
 import { Institution } from "src/institution/entities/institution.entity";
+import { emailRegex, phoneNumberRegex } from "./main.helper";
 
 export const isValidInstitutionCode = (code: string) =>
   code && code.includes("INS") && code.length === 23;
@@ -34,3 +35,40 @@ export const getDefaultInstitutionInfos = (institution: Institution) => ({
   socialMedia: institution.socialMedia,
   workers: institution.workers || [],
 });
+
+@ValidatorConstraint({ name: "EmailsValidator" })
+export class EmailsValidator implements ValidatorConstraintInterface {
+  validate(
+    emails: string[],
+    validationArguments?: ValidationArguments
+  ): boolean | Promise<boolean> {
+    let isValidArrayOfEmails = true;
+    for (const email of emails) {
+      if (!emailRegex.test(email)) isValidArrayOfEmails = false;
+    }
+    return isValidArrayOfEmails;
+  }
+
+  defaultMessage(validationArguments?: ValidationArguments): string {
+    return "At least one provided emails is invalid";
+  }
+}
+
+@ValidatorConstraint({ name: "PhoneNumbersValidator" })
+export class PhoneNumbersValidator implements ValidatorConstraintInterface {
+  validate(
+    phoneNumbers: string[],
+    validationArguments?: ValidationArguments
+  ): boolean | Promise<boolean> {
+    let isValidArrayOfPhoneNumbers = true;
+    for (const phoneNumber of phoneNumbers) {
+      if (!phoneNumberRegex.test(phoneNumber))
+        isValidArrayOfPhoneNumbers = false;
+    }
+    return isValidArrayOfPhoneNumbers;
+  }
+
+  defaultMessage(validationArguments?: ValidationArguments): string {
+    return "At least one provided phoneNumber is invalid";
+  }
+}

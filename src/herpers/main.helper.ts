@@ -51,3 +51,7 @@ export const getDefaultStudentInfos = (user: any) => ({
   EXTRAIT = "EXTRAIT",
   CNI = "CNI",
 } */
+
+export const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+
+export const phoneNumberRegex = /^[+]*[0-9]{1,3}[37][305-9][0-9]{3}[0-9]{2}[0-9]{2}$/  // Numéro de téléphone pour le Sénégal
