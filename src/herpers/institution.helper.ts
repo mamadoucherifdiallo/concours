@@ -34,6 +34,7 @@ export const getDefaultInstitutionInfos = (institution: Institution) => ({
   websites: institution.websites,
   socialMedia: institution.socialMedia,
   workers: institution.workers || [],
+  centers: institution.centers
 });
 
 @ValidatorConstraint({ name: "EmailsValidator" })

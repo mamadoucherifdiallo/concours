@@ -33,20 +33,6 @@ export enum ErrorMessages {
   INTERNAL_SERVER_ERROR = "Une erreur serveur est survenue",
 }
 
-export const getDefaultStudentInfos = (user: any) => ({
-  code: user.code,
-  firstName: user.firstName,
-  lastName: user.lastName,
-  role: user.role,
-  birthDay: user.birthDay,
-  email: user.email,
-  phoneNumber: user.phoneNumber,
-  createdAt: user.createdAt,
-  lastUpdatedAt: user.lastUpdatedAt,
-  isDeleted: user.isDeleted,
-  isActive: user.isActiveAccount,
-});
-
 /* export enum EDocumentTypes {
   EXTRAIT = "EXTRAIT",
   CNI = "CNI",
@@ -67,3 +53,38 @@ export class SocialMedia {
   value: string;
   type: ESocialMedia;
 }
+
+export enum EDataToRetrive {
+  ACCEPTED = "ACCEPTED",
+  CANCELED = "CANCELED",
+  REJECTED = "REJECTED",
+  PENDING = "PENDING",
+  ADMITTED = "ADMITTED",
+}
+
+export const getPropToRetrieve = (
+  // Utilisé pour ces différentes entités Center, Option, Competition, Institution
+  dataToRetrieve: string
+) => {
+  let arrayToReturn = "";
+  switch (dataToRetrieve) {
+    case EDataToRetrive.ACCEPTED:
+      arrayToReturn = "acceptedApplications";
+      break;
+    case EDataToRetrive.CANCELED:
+      arrayToReturn = "cancelledApplications";
+      break;
+    case EDataToRetrive.REJECTED:
+      arrayToReturn = "rejectedApplications";
+      break;
+    case EDataToRetrive.PENDING:
+      arrayToReturn = "pendingApplicatons";
+      break;
+    case EDataToRetrive.ADMITTED:
+      arrayToReturn = "admittedCandidates";
+      break;
+    default:
+      break;
+  }
+  return arrayToReturn;
+};
