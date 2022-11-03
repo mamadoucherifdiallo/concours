@@ -24,7 +24,7 @@ export class InstitutionHelperService {
     );
   }
 
-  async removeWorkersFromInstitution(institutionId: any, workerIds: any[]) {
+  async __removeWorkersFromInstitution(institutionId: any, workerIds: any[]) {
     return await this.institutionModel.findOneAndUpdate(
       { _id: institutionId },
       {
@@ -46,7 +46,7 @@ export class InstitutionHelperService {
     );
   }
 
-  async removeCompetitionsFromInstitution(
+  async __removeCompetitionsFromInstitution(
     institutionId: any,
     workerIds: any[]
   ) {
@@ -60,23 +60,23 @@ export class InstitutionHelperService {
     );
   }
 
-  async __addCentersToInstition(institutionId: any, workerIds: any[]) {
+  async __addCentersToInstition(institutionId: any, centerIds: any[]) {
     return await this.institutionModel.findOneAndUpdate(
       { _id: institutionId },
       {
         $addToSet: {
-          centers: { $each: workerIds },
+          centers: { $each: centerIds },
         },
       }
     );
   }
 
-  async removeCentersFromInstitution(institutionId: any, workerIds: any[]) {
+  async __removeCentersFromInstitution(institutionId: any, centerIds: any[]) {
     return await this.institutionModel.findOneAndUpdate(
       { _id: institutionId },
       {
         $pull: {
-          centers: { $each: workerIds },
+          centers: {$in: centerIds},
         },
       }
     );
@@ -93,20 +93,22 @@ export class InstitutionHelperService {
     );
   }
 
-  async removeOptionsFromInstitution(institutionId: any, workerIds: any[]) {
+  async __removeOptionsFromInstitution(institutionId: any, workerIds: any[]) {
     return await this.institutionModel.findOneAndUpdate(
       { _id: institutionId },
       {
         $pull: {
-          options: { $each: workerIds },
+          options: { $in: workerIds },
         },
       }
     );
   }
 
-  async findOneByCodeOrName(value: string) {
-    return await this.institutionModel.findOne({
-      $or: [{ code: value }, { name: value }],
-    });
+  async __findOneByCodeOrName(value: string) {
+    return await this.institutionModel
+      .findOne({
+        $or: [{ code: value }, { name: value }],
+      })
+      .lean();
   }
 }

@@ -4,7 +4,8 @@ import { UserHelperService } from "src/users/user.helper.service";
 import { LoginDto } from "./dto/login.dto";
 import * as bcrypt from "bcrypt";
 import { UnauthorizationException } from "src/exceptions/unauthorization.exception";
-import { ErrorMessages, getDefaultStudentInfos } from "src/herpers/main.helper";
+import { ErrorMessages } from "src/herpers/main.helper";
+import { getDefaultStudentInfos } from "src/herpers/user.helper";
 
 @Injectable()
 export class AuthentificationService {

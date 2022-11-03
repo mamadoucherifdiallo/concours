@@ -20,3 +20,17 @@ export class UserCodeValidator implements ValidatorConstraintInterface {
     return "Invalid user code";
   }
 }
+
+export const getDefaultStudentInfos = (user: any) => ({
+  code: user.code,
+  firstName: user.firstName,
+  lastName: user.lastName,
+  role: user.role,
+  birthDay: user.birthDay,
+  email: user.email,
+  phoneNumber: user.phoneNumber,
+  createdAt: user.createdAt,
+  lastUpdatedAt: user.lastUpdatedAt,
+  isDeleted: user.isDeleted,
+  isActive: user.isActiveAccount,
+});

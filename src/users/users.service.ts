@@ -24,6 +24,7 @@ import { UserHelperService } from "./user.helper.service";
 import { UnauthorizationException } from "src/exceptions/unauthorization.exception";
 import { NotFoundException } from "src/exceptions/not-found.exception";
 import { RoleHelperService } from "src/role/role.helper.service";
+import { getDefaultStudentInfos } from "src/herpers/user.helper";
 
 @Injectable()
 export class UsersService {
@@ -73,7 +74,7 @@ export class UsersService {
         `http://localhost:4200/account-activation/${newUser.token}`
       );
       return succeed({
-        data: createdUser,
+        data: getDefaultStudentInfos(createdUser),
         code: HttpStatus.CREATED,
         message: "Student account created successfully",
       });

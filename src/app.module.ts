@@ -10,6 +10,8 @@ import { AuthentificationModule } from './authentification/authentification.modu
 import { RoleModule } from './role/role.module';
 import { SchoolYearModule } from './school-year/school-year.module';
 import { InstitutionModule } from './institution/institution.module';
+import { CentersModule } from './centers/centers.module';
+import { OptionsModule } from './options/options.module';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { InstitutionModule } from './institution/institution.module';
     RoleModule,
     SchoolYearModule,
     InstitutionModule,
+    CentersModule,
+    OptionsModule,
   ],
   controllers: [AppController],
   providers: [

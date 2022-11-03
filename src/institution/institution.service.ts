@@ -92,6 +92,7 @@ export class InstitutionService {
         updateInstitutionDto.phoneNumbers || institution.phoneNumbers;
       institution.websites =
         updateInstitutionDto.websites || institution.websites;
+      institution.lastUpdatedAt = new Date();
 
       await institution.save();
       return succeed({

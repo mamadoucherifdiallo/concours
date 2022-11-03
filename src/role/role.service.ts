@@ -28,8 +28,8 @@ export class RoleService {
         data: createdRole,
         message: "New role created successfully",
       });
-    } catch (error) {
-      if (error.status === 401)
+    } catch (error) {      
+      if (error.code === 11000)
         throw new DuplicatedResourceException(
           `Role with same name "${createRoleDto.name}" already exist`
         );
