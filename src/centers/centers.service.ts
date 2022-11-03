@@ -74,6 +74,13 @@ export class CentersService {
 
   async findAll(paginationDto: PaginationDto): Promise<Result> {
     try {
+      let institution = null;
+      if (paginationDto.institution) {
+        institution = await this.institutionHelperService.__findOneByCodeOrName(
+          paginationDto.institution
+        );
+        if (!institution) throw new NotFoundException("Institution not found");
+      }
       const skip = (paginationDto.page - 1) * paginationDto.limit;
       const centers = await this.centerModel
         .find(
@@ -81,6 +88,9 @@ export class CentersService {
             isDeleted: false,
             ...(paginationDto.searchTerm && {
               name: { $regex: paginationDto.searchTerm, $options: "i" },
+            }),
+            ...(institution && {
+              institution: institution._id,
             }),
           },
           { _id: 0, __v: 0 },

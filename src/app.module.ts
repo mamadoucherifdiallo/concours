@@ -11,6 +11,7 @@ import { RoleModule } from './role/role.module';
 import { SchoolYearModule } from './school-year/school-year.module';
 import { InstitutionModule } from './institution/institution.module';
 import { CentersModule } from './centers/centers.module';
+import { OptionsModule } from './options/options.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { CentersModule } from './centers/centers.module';
     SchoolYearModule,
     InstitutionModule,
     CentersModule,
+    OptionsModule,
   ],
   controllers: [AppController],
   providers: [

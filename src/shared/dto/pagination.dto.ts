@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsOptional, Min } from "class-validator";
+import { IsNotEmpty, IsOptional, Min, Validate } from "class-validator";
+import { InstitutionCodeValidator } from "src/herpers/institution.helper";
 
 export class PaginationDto {
   @IsNotEmpty({ message: "page is require" })
@@ -14,4 +15,8 @@ export class PaginationDto {
 
   @IsOptional()
   sortProp: string;
+
+  @IsOptional()
+  @Validate(InstitutionCodeValidator)
+  institution: string;
 }
