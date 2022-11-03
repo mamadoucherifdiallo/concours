@@ -98,7 +98,7 @@ export class InstitutionHelperService {
       { _id: institutionId },
       {
         $pull: {
-          options: { $each: workerIds },
+          options: { $in: workerIds },
         },
       }
     );

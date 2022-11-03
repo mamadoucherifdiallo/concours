@@ -15,11 +15,23 @@ import { PaginationDto } from "src/shared/dto/pagination.dto";
 import { isValidOptionCode } from "src/herpers/option.helper";
 import { InvalidCodeException } from "src/exceptions/invalid-code.exception";
 import { JwtAuthGuard } from "src/authentification/jwt-auth.guard";
+import { RetrieveOptionsCandidatesDto } from "./dto/retrieve-options-candidates.dto";
+import { OptionsDto } from "./dto/options.dto";
 
 @UseGuards(JwtAuthGuard)
 @Controller("options")
 export class OptionsController {
   constructor(private readonly optionsService: OptionsService) {}
+
+  @Post("institution/add-options")
+  addCenters(@Body() options: OptionsDto) {
+    return this.optionsService.addOptionsToInstitution(options);
+  }
+
+  @Post("remove/centers")
+  removeOptions(@Body() options: OptionsDto) {
+    return this.optionsService.removeOptions(options);
+  }
 
   @Post()
   create(@Body() createOptionDto: CreateOptionDto) {
@@ -29,6 +41,11 @@ export class OptionsController {
   @Post("list")
   findAll(@Body() paginationDto: PaginationDto) {
     return this.optionsService.findAll(paginationDto);
+  }
+
+  @Post("retrieve-options-candidates")
+  retriveOptionsCandidates(@Body() data: RetrieveOptionsCandidatesDto) {
+    return this.optionsService.retrieveOptionCandidatesData(data);
   }
 
   @Get(":code")
@@ -46,10 +63,5 @@ export class OptionsController {
     if (!isValidOptionCode(code))
       throw new InvalidCodeException("Invalid option code");
     return this.optionsService.update(code, updateOptionDto);
-  }
-
-  @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.optionsService.remove(+id);
   }
 }

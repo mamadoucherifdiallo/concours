@@ -5,7 +5,7 @@ import { OptionCodeValidator } from "src/herpers/option.helper";
 export class RetrieveOptionsCandidatesDto {
     @IsNotEmpty({message: "Yu must privide at least one center"})
     @Validate(OptionCodeValidator)
-    center: string[]
+    center: string;
 
     @IsNotEmpty({message: "Page is require"})
     page: number;
