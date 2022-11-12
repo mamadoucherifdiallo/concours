@@ -12,6 +12,7 @@ import { SchoolYearModule } from './school-year/school-year.module';
 import { InstitutionModule } from './institution/institution.module';
 import { CentersModule } from './centers/centers.module';
 import { OptionsModule } from './options/options.module';
+import { CompetitionsModule } from './competitions/competitions.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { OptionsModule } from './options/options.module';
     InstitutionModule,
     CentersModule,
     OptionsModule,
+    CompetitionsModule,
   ],
   controllers: [AppController],
   providers: [

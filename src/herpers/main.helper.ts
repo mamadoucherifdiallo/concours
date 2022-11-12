@@ -88,3 +88,16 @@ export const getPropToRetrieve = (
   }
   return arrayToReturn;
 };
+
+export enum ECandidateIdentityFieldName {
+  firstName = "firstName",
+  lastName = "lastName",
+  email = "email",
+  phoneNumber = "phoneNumber",
+  address = "address",
+  birthDay = "birthDay",
+  placeOfBirth = "placeOfBirth",
+  gender = "gender",
+  maritalStatus = "maritalStatus", // à traduire en anglais
+  nationalIdNumber = "nationalIdNumber",
+}
