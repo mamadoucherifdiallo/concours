@@ -74,3 +74,8 @@ export class PhoneNumbersValidator implements ValidatorConstraintInterface {
     return "At least one provided phoneNumber is invalid";
   }
 }
+
+export enum EInstitutionType {
+  SCHOOL = "SCHOOL",
+  OTHERS = "OTHERS",
+}

@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, ObjectId, Types } from "mongoose";
+import { EInstitutionType } from "src/herpers/institution.helper";
 import { generateCode, SocialMedia } from "src/herpers/main.helper";
 import { DefaultAttribute } from "src/shared/entities/default-attributes.entity";
 import { User } from "src/users/entities/user.entity";
@@ -27,6 +28,9 @@ export class Institution extends DefaultAttribute {
   @Prop({ type: String, default: "" })
   acronym: string;
 
+  @Prop({ type: String, default: "", enum: EInstitutionType }) // Type d'institution (School, others)
+  type: EInstitutionType;
+
   @Prop({ type: [String], default: [] })
   websites: string[];
 
@@ -39,16 +43,21 @@ export class Institution extends DefaultAttribute {
   @Prop({ type: Types.Array, default: [] })
   socialMedia: SocialMedia[];
 
-  @Prop({ type: [Types.ObjectId], required: true, default: [], ref: 'Center' })
+  @Prop({ type: [Types.ObjectId], required: true, default: [], ref: "Center" })
   centers: ObjectId[];
 
-  @Prop({ type: [Types.ObjectId], required: true, default: [], ref: 'Option' })
+  @Prop({ type: [Types.ObjectId], required: true, default: [], ref: "Option" })
   options: ObjectId[];
 
   @Prop({ type: [Types.ObjectId], required: true, default: [], ref: User.name })
   workers: ObjectId[];
 
-  @Prop({ type: [Types.ObjectId], required: true, default: [], ref: 'Competition' })
+  @Prop({
+    type: [Types.ObjectId],
+    required: true,
+    default: [],
+    ref: "Competition",
+  })
   competitions: any[];
 }
 
