@@ -13,6 +13,7 @@ import { InstitutionModule } from './institution/institution.module';
 import { CentersModule } from './centers/centers.module';
 import { OptionsModule } from './options/options.module';
 import { CompetitionsModule } from './competitions/competitions.module';
+import { FieldsModule } from './fields/fields.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { CompetitionsModule } from './competitions/competitions.module';
     CentersModule,
     OptionsModule,
     CompetitionsModule,
+    FieldsModule,
   ],
   controllers: [AppController],
   providers: [
